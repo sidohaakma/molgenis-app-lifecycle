@@ -4,12 +4,13 @@ import LifeCycleCatalogue from '@/components/LifeCycleCatalogue'
 import HarmonizationComparison from '@/components/harmonization/HarmonizationComparison'
 
 Vue.use(Router)
-
+const {baseUrl} = window.__INITIAL_STATE__ || {}
 export default new Router({
   mode: 'history',
+  base: baseUrl,
   routes: [
     {
-      path: '/',
+      path: '/lifecycle',
       component: LifeCycleCatalogue
     },
     {
@@ -24,6 +25,10 @@ export default new Router({
           component: HarmonizationComparison
         }
       ]
+    },
+    {
+      path: '/',
+      redirect: '/lifecycle'
     }
   ]
 })
