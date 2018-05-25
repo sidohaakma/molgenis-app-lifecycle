@@ -6,11 +6,11 @@
     <div class="row mt-3">
 
       <div class="col-xl-4 col-lg-4 col-12 mb-2">
-        <Tree :treeData="treeData" :itemClick="treeClick"></Tree>
+        <Tree :treeNodes="treeNodes" :itemClickHandler="treeClick"></Tree>
       </div>
 
       <div class="col-xl-8 col-lg-8 col-12 mb-2">
-        <CoreVariables :variable="selectedFeature"></CoreVariables>
+        <CoreVariables></CoreVariables>
       </div>
 
     </div>
@@ -19,7 +19,7 @@
 
       <div class="col-xl-4 col-lg-4 col-12 mb-2"></div>
       <div class="col-xl-8 col-lg-8 col-12 mb-2">
-        <Harmonizations :variable="selectedFeature"></Harmonizations>
+        <Harmonizations></Harmonizations>
       </div>
 
     </div>
@@ -31,9 +31,8 @@
   import CoreVariables from './core-variables/CoreVariables'
   import Harmonizations from './harmonization/Harmonizations'
   import MolgenisMenu from './MolgenisMenu'
-  import { SET_SELECTED_FEATURE } from '../store/mutations'
-  import { GET_TREE_DATA, GET_CORE_VARIABLES_FROM_TREE, GET_COHORTS } from '../store/actions'
-  import { mapGetters } from 'vuex'
+  import { SELECTED_MENUITEM, GET_TREE_DATA, GET_COHORTS } from '../store/actions'
+  import { mapGetters, mapState } from 'vuex'
 
   export default {
     name: 'LifeCycleCatalogue',
@@ -44,15 +43,12 @@
       MolgenisMenu
     },
     computed: {
-      ...mapGetters({
-        treeData: 'getTreeData',
-        selectedFeature: 'getSelectedFeature'
-      })
+      ...mapGetters(['treeNodes']),
+      ...mapState(['selectedMenuItem'])
     },
     methods: {
       treeClick (node) {
-        this.$store.commit(SET_SELECTED_FEATURE, node.model.value)
-        this.$store.dispatch(GET_CORE_VARIABLES_FROM_TREE, node.model.id)
+        this.$store.dispatch(SELECTED_MENUITEM, node.model)
       }
     },
     mounted () {

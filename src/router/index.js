@@ -10,7 +10,7 @@ export default new Router({
   base: baseUrl,
   routes: [
     {
-      path: '/lifecycle',
+      path: '/',
       component: LifeCycleCatalogue
     },
     {

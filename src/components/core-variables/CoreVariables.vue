@@ -1,18 +1,18 @@
 <template>
-  <div class="card" v-if="variableData.length > 0">
+  <div class="card" v-if="data.length > 0">
     <div class="card-header">
-      {{ selectedVariable }}
+      {{ variable.text }}
     </div>
     <div class="card-body table-responsive">
     <table class="table table-sm">
       <thead>
         <tr>
-          <th v-for="column in variableColumns">{{ column.label }}</th>
+          <th v-for="column in columns">{{ column.label }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="variable in variableData">
-          <td v-for="column in variableColumns">
+        <tr v-for="variable in data">
+          <td v-for="column in columns">
             <span v-if="typeof variable[column.name] === 'object'">test {{ variable[column.name].label }}</span>
             <pre v-else-if="column.name === 'values'">{{ variable[column.name] }}</pre>
             <pre class="pre-wrap" v-else-if="column.name === 'comments'">{{ variable[column.name] }}</pre>
@@ -26,22 +26,15 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'CoreVariables',
-    props: {
-      variable: {
-        tyoe: String
-      }
-    },
     computed: {
-      selectedVariable () {
-        return this.variable
-      },
-      ...mapGetters({
-        variableColumns: 'getCoreVariablesColumns',
-        variableData: 'getCoreVariablesData'
+      ...mapState({
+        columns: state => state.coreVariables.columns,
+        data: state => state.coreVariables.data,
+        variable: state => state.selectedMenuItem
       })
     }
   }

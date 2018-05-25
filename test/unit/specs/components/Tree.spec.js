@@ -9,8 +9,8 @@ describe('Tree unit tests', () => {
   const treeClick = td.function()
 
   const propsData = {
-    treeData: mockTreeData,
-    itemClick: treeClick
+    treeNodes: mockTreeData,
+    itemClickHandler: treeClick
   }
 
   let wrapper
@@ -41,6 +41,6 @@ describe('Tree unit tests', () => {
         }
       }
     }
-    wrapper.vm.setTreeLeafColor(node)
+    expect(wrapper.vm.searchInput(node)).toBe('test')
   })
 })

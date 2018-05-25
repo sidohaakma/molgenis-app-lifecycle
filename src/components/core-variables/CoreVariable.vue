@@ -1,17 +1,17 @@
 <template>
   <div class="card">
     <div class="card-header">
-      Core variable: <strong>{{ selectedVariable[0].label }}</strong>
+      Core variable: <strong>{{ data.label }}</strong>
     </div>
     <div class="card-body table-responsive">
       <table class="table table-striped">
-        <tr v-for="column in variableColumns">
+        <tr v-for="column in columns">
           <th>{{ column.label }}</th>
           <td>
-            <span v-if="typeof selectedVariable[0][column.name] === 'object'">test {{ selectedVariable[0][column.name].label }}</span>
-            <pre v-else-if="column.name === 'values'">{{ selectedVariable[0][column.name] }}</pre>
-            <pre class="pre-wrap" v-else-if="column.name === 'comments'">{{ selectedVariable[0][column.name] }}</pre>
-            <span v-else>{{ selectedVariable[0][column.name] }}</span>
+            <span v-if="typeof data[column.name] === 'object'">test {{ data[column.name].label }}</span>
+            <pre v-else-if="column.name === 'values'">{{ data[column.name] }}</pre>
+            <pre class="pre-wrap" v-else-if="column.name === 'comments'">{{ data[column.name] }}</pre>
+            <span v-else>{{ data[column.name] }}</span>
           </td>
         </tr>
       </table>
@@ -20,14 +20,16 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'CoreVariable',
     computed: {
-      ...mapGetters({
-        variableColumns: 'getCoreVariablesColumns',
-        selectedVariable: 'getCoreVariablesData'
+      ...mapState({
+        columns: state => state.coreVariables.columns,
+        // TODO rewrite to select a value from state.coreVariables.data
+        // TODO add an index to the state like state.selectedCoreVariableIndex
+        data: state => state.coreVariables.data[0]
       })
     }
   }

@@ -63,14 +63,14 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'HarmonizationDetail',
     computed: {
-      ...mapGetters({
-        harmonization: 'getHarmonizations',
-        sourceVariables: 'getSourceVariables'
+      ...mapState({
+        harmonization: state => state.harmonizations,
+        sourceVariables: state => state.coreVariables.sourceVariables
       })
     }
   }

@@ -16,30 +16,26 @@ describe('mutations', () => {
         'isSelected': false,
         'isDisabled': false,
         'isLoading': false
-      },
-      data: [],
-      raw: []
+      }
     },
-    variables: {
+    coreVariables: {
       columns: [],
       data: [],
-      source: []
+      sourceVariables: []
     },
     cohorts: [],
     harmonizations: [],
     navbarLogo: '',
     error: undefined,
-    selectedFeature: ''
+    selectedMenuItem: {
+      id: '',
+      text: ''
+    }
   }
 
   it('should set the tree data in the state with the payload', () => {
     mutations.__SET_TREE_DATA__(state, TreeMapperResponse.mockTreeData)
     expect(state.tree.data).to.deep.equal(TreeMapperResponse.mockTreeData)
-  })
-
-  it('should set the raw tree data in the state with the payload', () => {
-    mutations.__SET_RAW_TREE_DATA__(state, EntityV2Response.mockRawTreeData)
-    expect(state.tree.raw).to.deep.equal(EntityV2Response.mockRawTreeData)
   })
 
   it('should set the core variable columns in the state with the payload', () => {
@@ -78,7 +74,7 @@ describe('mutations', () => {
   })
 
   it('should set selected feature in state', () => {
-    mutations.__SET_SELECTED_FEATURE__(state, 'test')
-    expect(state.selectedFeature).to.equal('test')
+    mutations.__SET_SELECTED_MENUITEM__(state, {id: 'test', text: 'test'})
+    expect(state.selectedMenuItem).to.equal({id: 'test', text: 'test'})
   })
 })

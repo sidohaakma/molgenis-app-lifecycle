@@ -7,20 +7,13 @@ describe('Harmonizations unit tests', () => {
   let wrapper
 
   beforeEach(function () {
-    let getters = {
-      getCoreVariablesData: () => {
-        return []
-      },
-      getCoreVariablesColumns: () => {
-        return []
-      },
-      getCohorts: () => {
-        return []
-      }
+    const state = {
+
     }
 
+
     let store = new Vuex.Store({
-      getters
+      state
     })
     wrapper = shallow(Harmonizations,
       {

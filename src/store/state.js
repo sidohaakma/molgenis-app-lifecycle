@@ -1,32 +1,31 @@
 // @flow
 import type { State } from '../flow.types'
 
-export const INITIAL_STATE = window.__INITIAL_STATE__ || {}
-
 const state: State = {
-  tree: {
-    settings: {
-      id: 'key',
-      label: 'title',
-      folderIcon: '',
-      leafIcon: 'fa fa-table',
-      isOpened: true,
-      isSelected: false,
-      isLoading: false
-    },
-    data: [],
-    raw: []
+  treeSettings: {
+    id: 'key',
+    label: 'title',
+    folderIcon: '',
+    leafIcon: 'fa fa-table',
+    isOpened: true,
+    isSelected: false,
+    isLoading: false
   },
-  variables: {
+  menuItems: [],
+  coreVariables: {
     columns: [],
     data: [],
-    source: []
+    sourceVariables: []
+  },
+  selectedMenuItem: {
+    id: '',
+    text: '',
+    value: ''
   },
   cohorts: [],
   harmonizations: [],
   navbarLogo: '',
-  error: '',
-  selectedFeature: ''
+  error: ''
 }
 
 export default state

@@ -1,14 +1,14 @@
 <template>
-  <div class="card" v-if="variableData.length > 0">
+  <div class="card" v-if="data.length > 0">
     <div class="card-header">
-      Harmonizations of {{ variable }}
+      Harmonizations of {{ selectedMenuItem.value }}
     </div>
     <div class="card-body table-responsive">
       <table class="table table-sm" cellspacing="0">
         <thead>
           <tr>
             <th></th>
-            <th v-for="variable in variableData" @click="selectedVariable = variable;showCoreVariable = !showCoreVariable">{{ variable.variable }}</th>
+            <th v-for="variable in data" @click="selectedVariable = variable;showCoreVariable = !showCoreVariable">{{ variable.variable }}</th>
           </tr>
           <tr v-if="selectedVariable.variable && showCoreVariable">
             <td></td>
@@ -20,7 +20,7 @@
         <tbody v-for="cohort in cohorts">
           <tr>
             <td>{{ cohort.label }}</td>
-            <td v-for="variable in variableData">
+            <td v-for="variable in data">
               <div v-if="variableExists(cohort.id, variable.harmonizations)" style="font-size:20px">
                 <router-link :to="'/' + variable.variable + '/' + getSelectedHarmonization(variable, cohort.id)"><i class="fa fa-check-circle text-success"></i></router-link>
               </div>
@@ -39,20 +39,16 @@
   import HarmonizationDetail from './HarmonizationDetail'
   import CoreVariable from '../core-variables/CoreVariable'
   import CoreVariableRow from '../core-variables/CoreVariableRow'
-  import { mapGetters } from 'vuex'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'Harmonizations',
-    props: {
-      variable: {
-        type: String
-      }
-    },
     computed: {
-      ...mapGetters({
-        variableData: 'getCoreVariablesData',
-        variableColumns: 'getCoreVariablesColumns',
-        cohorts: 'getCohorts'
+      ...mapState({
+        data: state => state.coreVariables.data,
+        columns: state => state.coreVariables.columns,
+        cohorts: state => state.cohorts,
+        selectedMenuItem: state => state.selectedMenuItem
       })
     },
     components: {
@@ -68,6 +64,9 @@
     },
     methods: {
       variableExists: function (cohort, harmonizations) {
+        if (harmonizations.length > 0) {
+          console.log(harmonizations)
+        }
         return harmonizations.some(function (harmonization) {
           return harmonization.sourceLabel === cohort
         })
