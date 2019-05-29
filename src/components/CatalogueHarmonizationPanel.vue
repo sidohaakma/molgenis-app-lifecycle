@@ -7,8 +7,8 @@
           <tr>
             <th scope="col" class="pr-5">Cohort</th>
 
-            <th v-for="variable in selectedNodeVariables" v-if="isVariableHarmonized(variable.variable)">
-              {{variable.variable }}
+            <th v-for="variable in selectedNodeVariables" v-if="isVariableHarmonized(variable.variable)" @mouseover="showCohortSummaryStatistics(variable.variable, cohorts, summaries)">
+                {{ variable.variable }}
             </th>
           </tr>
           </thead>
@@ -26,25 +26,25 @@
                 v-if="isVariableHarmonized(variable.variable)">
 
               <template v-if="variableCompleteHarmonizedForCohort(cohort, variable.variable)">
-                <a href="" @click.prevent="navigateToHarmonizationComparison(getHarmonizationRowId(cohort, variable.variable))">
-                  <font-awesome-icon icon="check-circle" class="text-success" size="s"></font-awesome-icon>
+                <a href="" @click.prevent="navigateToHarmonizationComparison(getHarmonizationRowId(cohort, variable.variable))" @mouseover="showSummaryStatistics(variable.variable, cohort)" @mouseout="hideSummaryStatistics">
+                  <font-awesome-icon icon="circle" class="text-success" size="s"/>
                 </a>
               </template>
 
               <template v-else-if="variablePartialHarmonizedForCohort(cohort, variable.variable)">
                 <a href="" @click.prevent="navigateToHarmonizationComparison(getHarmonizationRowId(cohort, variable.variable))">
-                  <font-awesome-icon icon="check-circle" class="text-warning" size="s"></font-awesome-icon>
+                  <font-awesome-icon icon="circle" class="text-warning" size="s"/>
                 </a>
               </template>
 
               <template v-else-if="variableNAHarmonizedForCohort(cohort, variable.variable)">
                 <a href="" @click.prevent="navigateToHarmonizationComparison(getHarmonizationRowId(cohort, variable.variable))">
-                  <font-awesome-icon icon="times" class="text-secondary" size="s"></font-awesome-icon>
+                  <font-awesome-icon icon="times" class="text-secondary" size="s"/>
                 </a>
               </template>
 
               <template v-else>
-                <font-awesome-icon icon="question" class="text-secondary" size="s"></font-awesome-icon>
+                <font-awesome-icon icon="question" class="text-secondary" size="s"/>
               </template>
             </td>
           </tr>
@@ -60,6 +60,7 @@
         </table>
       </template>
 
+      <modals-container/>
 
     </div>
   </div>
@@ -78,12 +79,14 @@
     width: 4rem;
   }
 </style>
-
 <script>
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { library } from '@fortawesome/fontawesome-svg-core'
-  import { faCheckCircle, faQuestion, faTimes } from '@fortawesome/free-solid-svg-icons'
-  library.add(faCheckCircle, faQuestion, faTimes)
+  import { faCheckCircle, faQuestion, faTimes, faCircle } from '@fortawesome/free-solid-svg-icons'
+  import VModal from 'vue-js-modal'
+  import SummaryStatistics from '../components/SummaryStatistics'
+  import CohortSummaryStatistics from '../components/CohortSummaryStatistics'
+  library.add(faCheckCircle, faQuestion, faTimes, faCircle)
 
   export default {
     name: 'CatalogueHarmonizationPanel',
@@ -123,6 +126,28 @@
 
       navigateToHarmonizationComparison (harmonizationId) {
         this.$router.push(this.$route.path + '/' + harmonizationId)
+      },
+      showSummaryStatistics (variable, cohort) {
+        this.$modal.show(SummaryStatistics, {
+          variable: variable,
+          cohort: cohort
+        }, {
+          draggable: true,
+          height: 'auto'
+        })
+      },
+      showCohortSummaryStatistics (variable, cohorts, summaries) {
+        this.$modal.show(CohortSummaryStatistics, {
+          variable: variable,
+          cohorts: cohorts
+        }, {
+          draggable: true,
+          height: 'auto',
+          weight: '1rm'
+        })
+      },
+      hideSummaryStatistics () {
+        this.$modal.hide()
       }
     },
     computed: {
@@ -149,7 +174,10 @@
       }
     },
     components: {
-      FontAwesomeIcon
+      FontAwesomeIcon,
+      VModal,
+      SummaryStatistics,
+      CohortSummaryStatistics
     }
   }
 </script>
